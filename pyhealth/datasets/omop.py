@@ -8,7 +8,7 @@ from pyhealth.datasets import BaseEHRDataset
 from pyhealth.datasets.utils import strptime
 
 
-# TODO: add other tables
+# TODO: add other tables 
 
 
 class OMOPDataset(BaseEHRDataset):
@@ -75,7 +75,7 @@ class OMOPDataset(BaseEHRDataset):
         ...     )
         >>> dataset.stat()
         >>> dataset.info()
-
+ 
     """
 
     def parse_basic_info(self, patients: Dict[str, Patient]) -> Dict[str, Patient]:
@@ -92,25 +92,25 @@ class OMOPDataset(BaseEHRDataset):
             patients: a dict of `Patient` objects indexed by patient_id.
 
         Returns:
-            The updated patients dict.
+            The updated patients dict. 
         """
         # read person table
         person_df = pd.read_csv(
             os.path.join(self.root, "person.csv"),
             dtype={"person_id": str},
             nrows=1000 if self.dev else None,
-            sep="\t",
+            sep=self.sep,
         )
         # read visit_occurrence table
         visit_occurrence_df = pd.read_csv(
             os.path.join(self.root, "visit_occurrence.csv"),
             dtype={"person_id": str, "visit_occurrence_id": str},
-            sep="\t",
+            sep=self.sep,
         )
         # read death table
         death_df = pd.read_csv(
             os.path.join(self.root, "death.csv"),
-            sep="\t",
+            sep=self.sep,
             dtype={"person_id": str},
         )
         # merge
@@ -193,9 +193,9 @@ class OMOPDataset(BaseEHRDataset):
                 "visit_occurrence_id": str,
                 "condition_concept_id": str,
             },
-            sep="\t",
+            sep=self.sep,
         )
-        # drop rows with missing values
+        # drop rows with missing values 
         df = df.dropna(
             subset=["person_id", "visit_occurrence_id", "condition_concept_id"]
         )
@@ -226,10 +226,10 @@ class OMOPDataset(BaseEHRDataset):
                     )
                     # update patients
                     events.append(event)
+            return events
 
         # parallel apply
         group_df = group_df.parallel_apply(lambda x: condition_unit(x))
-
         # summarize the results
         patients = self._add_events_to_patient_dict(patients, group_df)
 
@@ -260,7 +260,7 @@ class OMOPDataset(BaseEHRDataset):
                 "visit_occurrence_id": str,
                 "procedure_concept_id": str,
             },
-            sep="\t",
+            sep=self.sep,
         )
         # drop rows with missing values
         df = df.dropna(
@@ -323,7 +323,7 @@ class OMOPDataset(BaseEHRDataset):
                 "visit_occurrence_id": str,
                 "drug_concept_id": str,
             },
-            sep="\t",
+            sep=self.sep,
         )
         # drop rows with missing values
         df = df.dropna(subset=["person_id", "visit_occurrence_id", "drug_concept_id"])
@@ -378,6 +378,7 @@ class OMOPDataset(BaseEHRDataset):
             The updated patients dict.
         """
         table = "measurement"
+
         # read table
         df = pd.read_csv(
             os.path.join(self.root, f"{table}.csv"),
@@ -386,8 +387,8 @@ class OMOPDataset(BaseEHRDataset):
                 "visit_occurrence_id": str,
                 "measurement_concept_id": str,
             },
-            sep="\t",
-        )
+            sep=self.sep)
+
         # drop rows with missing values
         df = df.dropna(
             subset=["person_id", "visit_occurrence_id", "measurement_concept_id"]

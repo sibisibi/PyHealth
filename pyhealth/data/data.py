@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List 
 
 
 class Event:

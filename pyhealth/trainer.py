@@ -314,7 +314,7 @@ class Trainer:
             metrics_fn = get_metrics_fn(mode)
             scores = metrics_fn(y_true_all, y_prob_all, metrics=self.metrics)
             scores["loss"] = loss_mean
-        else:
+        else: 
             loss_all = []
             for data in tqdm(dataloader, desc="Evaluation"):
                 self.model.eval()

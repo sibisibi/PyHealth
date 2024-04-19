@@ -18,7 +18,7 @@ from pyhealth.medcode import CrossMap
 from pyhealth.utils import load_pickle, save_pickle
 
 logger = logging.getLogger(__name__)
-
+ 
 INFO_MSG = """
 dataset.patients: patient_id -> <Patient>
 
@@ -76,6 +76,8 @@ class BaseEHRDataset(ABC):
         code_mapping: Optional[Dict[str, Union[str, Tuple[str, Dict]]]] = None,
         dev: bool = False,
         refresh_cache: bool = False,
+        sep: str = "\t",
+        use_compressed: str = False,
     ):
         """Loads tables into a dict of patients and saves it to cache."""
 
@@ -90,6 +92,8 @@ class BaseEHRDataset(ABC):
 
         self.code_mapping = code_mapping
         self.dev = dev
+        self.sep = sep
+        self.use_compressed = use_compressed
 
         # if we are using a premade dataset, no basic tables need to be provided.
         if self.dataset_name in DATASET_BASIC_TABLES and [
@@ -222,6 +226,7 @@ class BaseEHRDataset(ABC):
         for _, events in group_df.items():
             for event in events:
                 patient_dict = self._add_event_to_patient_dict(patient_dict, event)
+        
         return patient_dict
 
     @staticmethod
@@ -279,7 +284,7 @@ class BaseEHRDataset(ABC):
             patient:a `Patient` object.
 
         Returns:
-            The updated `Patient` object.
+            The updated `Patient` object. 
         """
         for visit in patient:
             for table in visit.available_tables:
@@ -397,7 +402,7 @@ class BaseEHRDataset(ABC):
                 concatenated to form the sample dataset.
             task_name: the name of the task. If None, the name of the task
                 function will be used.
-
+ 
         Returns:
             sample_dataset: the task-specific sample dataset.
 

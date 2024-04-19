@@ -206,7 +206,7 @@ class Transformer(BaseModel):
 
     Note:
         We use separate Transformer layers for different feature_keys.
-        Currentluy, we automatically support different input formats:
+        Currently, we automatically support different input formats:
             - code based input (need to use the embedding table later)
             - float/int based value input
         We follow the current convention for the transformer model:

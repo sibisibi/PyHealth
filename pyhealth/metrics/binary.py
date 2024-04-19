@@ -40,7 +40,7 @@ def binary_metrics_fn(
         metrics: List of metrics to compute. Default is ["pr_auc", "roc_auc", "f1"].
         threshold: Threshold for binary classification. Default is 0.5.
 
-    Returns:
+    Returns: 
         Dictionary of metrics whose keys are the metric names and values are
             the metric values.
 
