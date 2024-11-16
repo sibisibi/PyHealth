@@ -99,18 +99,15 @@ class OMOPDataset(BaseEHRDataset):
             os.path.join(self.root, "person.csv"),
             dtype={"person_id": str},
             nrows=1000 if self.dev else None,
-            sep="\t",
         )
         # read visit_occurrence table
         visit_occurrence_df = pd.read_csv(
             os.path.join(self.root, "visit_occurrence.csv"),
             dtype={"person_id": str, "visit_occurrence_id": str},
-            sep="\t",
         )
         # read death table
         death_df = pd.read_csv(
             os.path.join(self.root, "death.csv"),
-            sep="\t",
             dtype={"person_id": str},
         )
         # merge
@@ -193,7 +190,6 @@ class OMOPDataset(BaseEHRDataset):
                 "visit_occurrence_id": str,
                 "condition_concept_id": str,
             },
-            sep="\t",
         )
         # drop rows with missing values
         df = df.dropna(
@@ -261,7 +257,6 @@ class OMOPDataset(BaseEHRDataset):
                 "visit_occurrence_id": str,
                 "procedure_concept_id": str,
             },
-            sep="\t",
         )
         # drop rows with missing values
         df = df.dropna(
@@ -324,7 +319,6 @@ class OMOPDataset(BaseEHRDataset):
                 "visit_occurrence_id": str,
                 "drug_concept_id": str,
             },
-            sep="\t",
         )
         # drop rows with missing values
         df = df.dropna(subset=["person_id", "visit_occurrence_id", "drug_concept_id"])
@@ -387,7 +381,6 @@ class OMOPDataset(BaseEHRDataset):
                 "visit_occurrence_id": str,
                 "measurement_concept_id": str,
             },
-            sep="\t",
         )
         # drop rows with missing values
         df = df.dropna(
